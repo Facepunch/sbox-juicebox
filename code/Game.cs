@@ -33,7 +33,7 @@ public partial class Juicebox : Game
 		}
 	}
 
-	[Event.Tick.Server]
+	[Event.Tick.Client]
 	public static void ServerTick()
 	{
 		GameState.Update();

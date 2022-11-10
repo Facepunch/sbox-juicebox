@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Sandbox;
 using Sandbox.Juicebox;
 
 namespace Facepunch.Juicebox;
@@ -27,7 +30,50 @@ public static class GameState
 		if ( _session == null )
 		{
 			_session = new JuiceboxSession();
+			Initialize();
+		}
 
+		if ( _session == null || !_session.IsOpen )
+		{
+			return;
+		}
+
+		RegisterNewPlayers();
+	}
+
+	private static void RegisterNewPlayers()
+	{
+		var changed = false;
+		foreach ( var player in _session.Players )
+		{
+			var index = Players.FindIndex( gp => gp.Name == player.Name );
+			if ( index < 0 )
+			{
+				var gamePlayer = new GamePlayer( player );
+				Players.Add( gamePlayer );
+				changed = true;
+			}
+		}
+
+		if ( changed )
+		{
+			Players = Players
+				.OrderByDescending( p => p.Score )
+				.ThenBy( p => p.Name, StringComparer.InvariantCultureIgnoreCase )
+				.ToList();
+		}
+	}
+
+	private static async void Initialize()
+	{
+		try
+		{
+			await _session.Start();
+			CurrentScreen = GameScreen.WaitingForPlayers;
+		}
+		catch ( Exception e )
+		{
+			Log.Error( e );
 		}
 	}
 }

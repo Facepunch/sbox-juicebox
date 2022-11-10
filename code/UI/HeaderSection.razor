@@ -4,7 +4,7 @@
 @using Facepunch.Juicebox;
 
 @namespace Facepunch.Juicebox.UI
-@attribute [StyleSheet( "/ui/styles/HeaderSection.scss" )]
+@attribute [StyleSheet("/ui/styles/HeaderSection.scss")]
 @inherits Panel
 
 <root>
@@ -20,26 +20,29 @@
     </div>
     <div class="container is-branding">
         <div class="branding-container">
-            <img class="branding sbox" src="textures/ui/branding-sbox.png"/>
+            <img class="branding sbox" src="textures/ui/branding-sbox.png" />
             <span class="subtitle">x</span>
-            <img class="branding juicebox" src="textures/ui/branding-juicebox.png"/>
+            <img class="branding juicebox" src="textures/ui/branding-juicebox.png" />
         </div>
     </div>
     <div class="container is-round-info">
-        <div class="round-info">
-            <div class="round-number">
-                <span>@GameState.RoundNumber</span>
+        @if (GameState.CurrentScreen >= GameScreen.QuestionPrompt)
+        {
+            <div class="round-info">
+                <div class="round-number">
+                    <span>@GameState.RoundNumber</span>
+                </div>
+                <div class="round-time">
+                    <span>00:00</span>
+                </div>
             </div>
-            <div class="round-time">
-                <span>00:00</span>
-            </div>
-        </div>
+        }
     </div>
 </root>
 
 @code {
     protected override int BuildHash()
     {
-        return HashCode.Combine( GameState.JoinCode, GameState.RoundNumber );
+        return HashCode.Combine(GameState.CurrentScreen, GameState.JoinCode, GameState.RoundNumber);
     }
 }
