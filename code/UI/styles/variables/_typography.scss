@@ -1,0 +1,9 @@
+@import "./_colours.scss";
+
+.styled {
+  color: #fff;
+  font-weight: 900;
+  text-stroke: 4px $darkestPurple;
+  text-shadow: 0 5px 0 rgba($darkestPurple, 1);
+  text-transform: uppercase;
+}

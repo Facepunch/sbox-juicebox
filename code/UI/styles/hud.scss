@@ -1,31 +1,23 @@
+@import "./variables/_typography.scss";
+
 Hud {
   pointer-events: none;
+  flex-direction: column;
 
   .header {
-    background-color: green;
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 200px;
+    z-index: 1;
   }
 
-  .center {
-    position: absolute;
+  .BodyContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
-  }
-
-  .bottom {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }

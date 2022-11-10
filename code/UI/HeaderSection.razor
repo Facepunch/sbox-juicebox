@@ -1,0 +1,36 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using Facepunch.Juicebox;
+
+@namespace Facepunch.Juicebox.UI
+@attribute [StyleSheet( "/ui/styles/HeaderSection.scss" )]
+@inherits Panel
+
+<root>
+    <div class="container is-spectate">
+        <span class="subtitle">Spectate</span>
+        <div class="spectate-code">
+            <span>6969</span>
+        </div>
+        <span class="subtitle">tv.asset.party</span>
+    </div>
+    <div class="container is-branding">
+        <div class="branding-container">
+            <img class="branding sbox" src="textures/ui/branding-sbox.png" />
+            <span class="subtitle">x</span>
+            <Icon class="icon">cross</Icon>
+            <img class="branding juicebox" src="textures/ui/branding-juicebox.png" />
+        </div>
+    </div>
+    <div class="container is-round-info">
+        <div class="round-info">
+            <div class="round-number">
+                <span>14</span>
+            </div>
+            <div class="round-time">
+                <span>00:00</span>
+            </div>
+        </div>
+    </div>
+</root>
