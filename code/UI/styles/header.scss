@@ -1,0 +1,50 @@
+@import "./variables/_colours.scss";
+@import "./variables/_misc.scss";
+
+Header {
+  background-color: $darkestPurple;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  padding: 48px;
+  align-items: center;
+
+  .container {
+    flex-grow: 1;
+    &.is-spectate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .spectate-code {
+        background-color: $darkPurple;
+        border-radius: $borderRadius;
+        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        margin: 8px 0;
+
+        padding: 3px 20px;
+
+        span {
+          color: #fff;
+          font-size: 50px;
+          font-weight: 900;
+          text-stroke: 4px $darkestPurple;
+          text-shadow: 0 5px 0 rgba($darkestPurple, 1);
+        }
+      }
+    }
+    &.is-branding {
+    }
+    &.is-round-info {
+    }
+  }
+}
+
+.subtitle {
+  color: $lightPurple;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-stroke: 1px solid red;
+  letter-spacing: 1px;
+}
