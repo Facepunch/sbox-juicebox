@@ -3,7 +3,7 @@
 
 Hud {
   background-image: url("./textures/ui/background.jpg");
-  pointer-events: none;
+  pointer-events: all;
   flex-direction: column;
 
   .header {

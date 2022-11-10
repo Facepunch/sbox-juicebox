@@ -9,23 +9,26 @@
 
 <root>
     <div class="container is-spectate">
-        <span class="subtitle">Spectate</span>
-        <div class="spectate-code">
-            <span>6969</span>
-        </div>
-        <span class="subtitle">tv.asset.party</span>
+        @if (!string.IsNullOrEmpty(GameState.JoinCode))
+        {
+            <span class="subtitle">Join</span>
+            <div class="spectate-code">
+                <span>@GameState.JoinCode</span>
+            </div>
+            <span class="subtitle">tv.asset.party</span>
+        }
     </div>
     <div class="container is-branding">
         <div class="branding-container">
-            <img class="branding sbox" src="textures/ui/branding-sbox.png" />
+            <img class="branding sbox" src="textures/ui/branding-sbox.png"/>
             <span class="subtitle">x</span>
-            <img class="branding juicebox" src="textures/ui/branding-juicebox.png" />
+            <img class="branding juicebox" src="textures/ui/branding-juicebox.png"/>
         </div>
     </div>
     <div class="container is-round-info">
         <div class="round-info">
             <div class="round-number">
-                <span>14</span>
+                <span>@GameState.RoundNumber</span>
             </div>
             <div class="round-time">
                 <span>00:00</span>
@@ -33,3 +36,10 @@
         </div>
     </div>
 </root>
+
+@code {
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( GameState.JoinCode, GameState.RoundNumber );
+    }
+}

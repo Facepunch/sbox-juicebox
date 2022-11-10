@@ -32,4 +32,10 @@ public partial class Juicebox : Game
 			pawn.Transform = tx;
 		}
 	}
+
+	[Event.Tick.Server]
+	public static void ServerTick()
+	{
+		GameState.Update();
+	}
 }

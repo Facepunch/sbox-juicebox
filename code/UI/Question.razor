@@ -8,10 +8,14 @@
 @inherits Panel
 
 <root>
-    <div class="question-container is-header">
-        <span class="question-text styled">The worst Halloween costume for a young child</span>
-    </div>
     <div class="question-container">
-        <span class="question-text styled">The worst Halloween costume for a young child</span>
+        <span class="question-text styled">@GameState.Question</span>
     </div>
 </root>
+
+@code {
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( GameState.Question );
+    }
+}

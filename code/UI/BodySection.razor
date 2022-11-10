@@ -1,5 +1,4 @@
 @using System;
-@using Sandbox;
 @using Sandbox.UI;
 @using Facepunch.Juicebox;
 
@@ -8,6 +7,26 @@
 @inherits Panel
 
 <root>
-    <Question></Question>
-    <Answers></Answers>
+    @switch (GameState.CurrentScreen)
+    {
+        case GameScreen.SettingUp:
+            break;
+        case GameScreen.WaitingForPlayers:
+            <PlayerList></PlayerList>
+            break;
+        case GameScreen.QuestionPrompt:
+            <Question></Question>
+            break;
+        case GameScreen.QuestionResults:
+            <Question></Question>
+            <Answers></Answers>
+            break;
+    }
 </root>
+
+@code {
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( GameState.CurrentScreen );
+    }
+}

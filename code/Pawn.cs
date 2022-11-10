@@ -1,10 +1,8 @@
 ﻿using Sandbox;
-using System;
-using System.Linq;
 
-namespace Sandbox;
+namespace Facepunch.Juicebox;
 
-partial class Pawn : AnimatedEntity
+public partial class Pawn : AnimatedEntity
 {
 	/// <summary>
 	/// Called when the entity is first created 
