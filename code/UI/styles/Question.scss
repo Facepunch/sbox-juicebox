@@ -1,0 +1,34 @@
+@import "./variables/_colours.scss";
+
+Question {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .question-container {
+    flex-grow: 1;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    line-height: 32px;
+
+    &.is-header {
+      background-color: $purple;
+      flex-grow: 0;
+      padding: 15px 0;
+
+      .question-text {
+        font-size: 32px;
+        padding-bottom: 2px;
+      }
+    }
+
+    .question-text {
+      color: linear-gradient($lightPurple, #fff);
+      font-size: 100px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+  }
+}

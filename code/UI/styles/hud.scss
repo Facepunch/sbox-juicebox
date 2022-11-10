@@ -1,6 +1,7 @@
 @import "./variables/_typography.scss";
 
 Hud {
+  background-image: url("./textures/ui/background.jpg");
   pointer-events: none;
   flex-direction: column;
 
