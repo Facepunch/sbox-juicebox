@@ -44,21 +44,18 @@ public static class GameState
 
 		RegisterNewPlayers();
 	}
-	
+
 	private static async void QuestionLoop()
 	{
 		try
 		{
-			var round = 0;
 			while ( true )
 			{
-				round++;
-
 				CurrentScreen = GameScreen.QuestionPrompt;
 				_session.Display( new JuiceboxDisplay
 				{
-					RoundHeader = new JuiceboxHeader { RoundNumber = round, RoundTime = 60, },
-					Question = $"(Round {round}) The worst Halloween costume for a young child",
+					RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60, },
+					Question = $"(Round {RoundNumber}) The worst Halloween costume for a young child",
 					Answer = new JuiceboxAnswer
 					{
 						Form = new List<JuiceboxFormControl>
@@ -76,16 +73,17 @@ public static class GameState
 				} );
 
 				_receivedAllAnswers = new TaskCompletionSource();
-				Players.ForEach(p => p.Answer = null);
+				Players.ForEach( p => p.Answer = null );
 				await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllAnswers.Task );
 
 				CurrentScreen = GameScreen.QuestionResults;
 				_session.Display( new JuiceboxDisplay
 				{
-					RoundHeader = new JuiceboxHeader { RoundNumber = round },
+					RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber },
 				} );
 
 				await Task.Delay( 10000 );
+				RoundNumber++;
 
 			}
 		}
@@ -188,6 +186,12 @@ public static class GameState
 			return;
 		}
 
+		if ( string.IsNullOrWhiteSpace( answer ) )
+		{
+			Log.Warning( $"Received response from {player.Name}, but it's blank" );
+			return;
+		}
+
 		if ( !string.IsNullOrEmpty( gamePlayer.Answer ) )
 		{
 			Log.Warning( $"Received answer from {player.Name}, but they already answered this question" );
@@ -217,7 +221,7 @@ public static class GameState
 				Log.Error( $"{player.Name} tried to start the game but it's already started" );
 				return;
 			}
-			
+
 			QuestionLoop();
 			return;
 		}
