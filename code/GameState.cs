@@ -29,6 +29,7 @@ public static class GameState
 	private static JuiceboxSession _session;
 	private static TaskCompletionSource _receivedAllAnswers;
 	private static TaskCompletionSource _receivedAllVotes;
+	private static Queue<string> _questions;
 
 	public static void Update()
 	{
@@ -52,7 +53,12 @@ public static class GameState
 		{
 			while ( true )
 			{
-				Question = $"(Round {RoundNumber}) The worst Halloween costume for a young child";
+				if ( _questions == null || _questions.Count == 0 )
+				{
+					return;
+				}
+
+				Question = _questions.Dequeue();
 
 				CurrentScreen = GameScreen.QuestionPrompt;
 				_session.Display( new JuiceboxDisplay
@@ -133,7 +139,6 @@ public static class GameState
 				}
 
 				RoundNumber++;
-
 			}
 		}
 		catch ( OperationCanceledException )
@@ -209,6 +214,10 @@ public static class GameState
 	{
 		try
 		{
+			var questionList = FileSystem.Mounted.ReadJson<QuestionList>( "questions.json" );
+			var questions = (questionList?.Questions ?? new List<string>()).OrderBy( _ => Guid.NewGuid() ).Take( 20 );
+			_questions = new Queue<string>( questions );
+
 			await _session.Start();
 			_session.OnActionReceived += SessionActionReceived;
 			_session.OnResponseReceived += SessionResponseReceived;
