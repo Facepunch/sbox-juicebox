@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.Juicebox;
 
@@ -26,6 +27,7 @@ public static class GameState
 	public static string Question { get; private set; } = "The worst Halloween costume for a young child";
 
 	private static JuiceboxSession _session;
+	private static TaskCompletionSource _receivedAllAnswers;
 
 	public static void Update()
 	{
@@ -41,6 +43,60 @@ public static class GameState
 		}
 
 		RegisterNewPlayers();
+	}
+	
+	private static async void QuestionLoop()
+	{
+		try
+		{
+			var round = 0;
+			while ( true )
+			{
+				round++;
+
+				CurrentScreen = GameScreen.QuestionPrompt;
+				_session.Display( new JuiceboxDisplay
+				{
+					RoundHeader = new JuiceboxHeader { RoundNumber = round, RoundTime = 60, },
+					Question = $"(Round {round}) The worst Halloween costume for a young child",
+					Answer = new JuiceboxAnswer
+					{
+						Form = new List<JuiceboxFormControl>
+						{
+							new JuiceboxInput
+							{
+								Key = "answer",
+								Label = "Answer",
+								MaxLength = 100,
+								Placeholder = "Type your answer...",
+								Value = "",
+							},
+						},
+					},
+				} );
+
+				_receivedAllAnswers = new TaskCompletionSource();
+				Players.ForEach(p => p.Answer = null);
+				await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllAnswers.Task );
+
+				CurrentScreen = GameScreen.QuestionResults;
+				_session.Display( new JuiceboxDisplay
+				{
+					RoundHeader = new JuiceboxHeader { RoundNumber = round },
+				} );
+
+				await Task.Delay( 10000 );
+
+			}
+		}
+		catch ( OperationCanceledException )
+		{
+			// ignore
+		}
+		catch ( Exception e )
+		{
+			Log.Error( e );
+		}
 	}
 
 	private static void RegisterNewPlayers()
@@ -103,6 +159,7 @@ public static class GameState
 		{
 			await _session.Start();
 			_session.OnActionReceived += SessionActionReceived;
+			_session.OnResponseReceived += SessionResponseReceived;
 			CurrentScreen = GameScreen.WaitingForPlayers;
 
 			_session.Display( new JuiceboxDisplay
@@ -113,6 +170,35 @@ public static class GameState
 		catch ( Exception e )
 		{
 			Log.Error( e );
+		}
+	}
+
+	private static void SessionResponseReceived( JuiceboxSession session, JuiceboxPlayer player, Dictionary<string, string> data )
+	{
+		var gamePlayer = Players.Find( p => p.Name == player.Name );
+		if ( gamePlayer == null )
+		{
+			Log.Warning( $"Received response from {player.Name}, but they have no GamePlayer!" );
+			return;
+		}
+
+		if ( data == null || !data.TryGetValue( "answer", out var answer ) )
+		{
+			Log.Warning( $"Received response from {player.Name}, but it's missing the answer key" );
+			return;
+		}
+
+		if ( !string.IsNullOrEmpty( gamePlayer.Answer ) )
+		{
+			Log.Warning( $"Received answer from {player.Name}, but they already answered this question" );
+			return;
+		}
+
+		gamePlayer.Answer = answer;
+
+		if ( Players.All( p => !string.IsNullOrEmpty( p.Answer ) ) )
+		{
+			_receivedAllAnswers?.TrySetResult();
 		}
 	}
 
@@ -131,8 +217,8 @@ public static class GameState
 				Log.Error( $"{player.Name} tried to start the game but it's already started" );
 				return;
 			}
-
-			CurrentScreen = GameScreen.QuestionPrompt;
+			
+			QuestionLoop();
 			return;
 		}
 
