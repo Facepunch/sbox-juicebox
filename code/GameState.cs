@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.Juicebox;
@@ -84,7 +85,7 @@ public static class GameState
 				Players.ForEach( p => p.Answer = null );
 				_receivedAllAnswers = new TaskCompletionSource();
 				await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllAnswers.Task );
-
+				
 				var receivedAnyAnswers = Players.Any( p => !string.IsNullOrEmpty( p.Answer ) );
 				if ( receivedAnyAnswers )
 				{
@@ -129,6 +130,15 @@ public static class GameState
 						}
 					}
 
+					var bestAnswer = Players
+						.OrderByDescending( p => p.VotesReceived )
+						.Select( p => p.Answer )
+						.FirstOrDefault();
+					if ( bestAnswer != null )
+					{
+						SpeakWinningAnswer( Question, bestAnswer );
+					}
+
 					CurrentScreen = GameScreen.Results;
 					_session.Display( new JuiceboxDisplay
 					{
@@ -144,6 +154,27 @@ public static class GameState
 		catch ( OperationCanceledException )
 		{
 			// ignore
+		}
+		catch ( Exception e )
+		{
+			Log.Error( e );
+		}
+	}
+
+	private static readonly Regex PromptPattern = new Regex( @"^(.*?)(_+)(.*?)$" );
+	private static async void SpeakWinningAnswer( string question, string answer )
+	{
+		try
+		{
+			var match = PromptPattern.Match( question );
+			if ( match.Success )
+			{
+				await Juicebox.Say( match.Groups[1] + answer + match.Groups[3] );
+			}
+			else
+			{
+				await Juicebox.Say( question + " " + answer );
+			}
 		}
 		catch ( Exception e )
 		{
