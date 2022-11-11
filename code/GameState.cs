@@ -21,6 +21,8 @@ public static class GameState
 
 	public static List<GamePlayer> Players { get; private set; } = new List<GamePlayer>();
 
+	public static JuiceboxPlayer HostPlayer { get; private set; } = null;
+
 	public static string Question { get; private set; } = "The worst Halloween costume for a young child";
 
 	private static JuiceboxSession _session;
@@ -51,6 +53,7 @@ public static class GameState
 			{
 				var gamePlayer = new GamePlayer( player );
 				Players.Add( gamePlayer );
+				HostPlayer ??= player;
 				changed = true;
 			}
 		}
@@ -61,6 +64,36 @@ public static class GameState
 				.OrderByDescending( p => p.Score )
 				.ThenBy( p => p.Name, StringComparer.InvariantCultureIgnoreCase )
 				.ToList();
+
+			if ( CurrentScreen == GameScreen.WaitingForPlayers )
+			{
+				if ( Players.Count < 2 )
+				{
+					_session.Display( new JuiceboxDisplay
+					{
+						Question = "You are the host!\nRequires minimum 2 players.",
+					}, HostPlayer );
+				}
+				else
+				{
+					_session.Display( new JuiceboxDisplay
+					{
+						Question = "Is everybody ready?",
+						Answer = new JuiceboxAnswer
+						{
+							Form = new List<JuiceboxFormControl>
+							{
+								new JuiceboxButton
+								{
+									Key = "start_game",
+									Label = "Start Game",
+								},
+							},
+						},
+					}, HostPlayer );
+				}
+			}
+
 		}
 	}
 
@@ -69,11 +102,40 @@ public static class GameState
 		try
 		{
 			await _session.Start();
+			_session.OnActionReceived += SessionActionReceived;
 			CurrentScreen = GameScreen.WaitingForPlayers;
+
+			_session.Display( new JuiceboxDisplay
+			{
+				Question = "Waiting for players..."
+			} );
 		}
 		catch ( Exception e )
 		{
 			Log.Error( e );
 		}
+	}
+
+	private static void SessionActionReceived( JuiceboxSession session, JuiceboxPlayer player, string key )
+	{
+		if ( key == "start_game" )
+		{
+			if ( player != HostPlayer )
+			{
+				Log.Error( $"{player.Name} tried to start the game, but they aren't the host" );
+				return;
+			}
+
+			if ( CurrentScreen != GameScreen.WaitingForPlayers )
+			{
+				Log.Error( $"{player.Name} tried to start the game but it's already started" );
+				return;
+			}
+
+			CurrentScreen = GameScreen.QuestionPrompt;
+			return;
+		}
+
+		Log.Warning( $"Unknown action from {player.Name}: {key}" );
 	}
 }
