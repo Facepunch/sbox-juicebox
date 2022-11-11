@@ -7,6 +7,10 @@
 @attribute [StyleSheet( "/ui/styles/Answers.scss" )]
 @inherits Panel
 
+@code {
+    public bool ShowResults { get; set; } = false;
+}
+
 <root>
     
     @foreach (var player in GameState.Players)
@@ -16,20 +20,26 @@
             continue;
         }
 
-        <div class="answer-box pink">
-            <div class="answer-header">
-                <div class="number-container">
-                    <span class="styled">13</span>
+        <div class="answer-box green">
+            @if (ShowResults)
+            {
+                <div class="answer-header">
+                    <div class="number-container">
+                        <span class="styled">@player.VotesReceived</span>
+                    </div>
                 </div>
-            </div>
+            }
             <div class="answer-body">
                 <h1 class="answer-text">@player.Answer</h1>
             </div>
-            <div class="answer-footer">
-                <div class="player-bar">
-                    <span class="styled">@player.Name</span>
+            @if (ShowResults)
+            {
+                <div class="answer-footer">
+                    <div class="player-bar">
+                        <span class="styled">@player.Name</span>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     }
 

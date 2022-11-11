@@ -11,15 +11,23 @@
     {
         case GameScreen.SettingUp:
             break;
+
         case GameScreen.WaitingForPlayers:
-            <PlayerList Header="Waiting for players..." ShowScore />
+            <PlayerList Header="Waiting for players..." />
             break;
+
         case GameScreen.QuestionPrompt:
             <Question />
             break;
-        case GameScreen.QuestionResults:
+
+        case GameScreen.Voting:
             <Question />
             <Answers />
+            return;
+
+        case GameScreen.Results:
+            <PlayerList Header="Current Scores" ShowScore />
+            <Answers ShowResults />
             break;
     }
 </root>

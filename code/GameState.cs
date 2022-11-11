@@ -9,7 +9,7 @@ namespace Facepunch.Juicebox;
 
 public enum GameScreen
 {
-	SettingUp, WaitingForPlayers, QuestionPrompt, QuestionResults,
+	SettingUp, WaitingForPlayers, QuestionPrompt, Voting, Results,
 }
 
 public static class GameState
@@ -28,6 +28,7 @@ public static class GameState
 
 	private static JuiceboxSession _session;
 	private static TaskCompletionSource _receivedAllAnswers;
+	private static TaskCompletionSource _receivedAllVotes;
 
 	public static void Update()
 	{
@@ -51,11 +52,13 @@ public static class GameState
 		{
 			while ( true )
 			{
+				Question = $"(Round {RoundNumber}) The worst Halloween costume for a young child";
+
 				CurrentScreen = GameScreen.QuestionPrompt;
 				_session.Display( new JuiceboxDisplay
 				{
 					RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60, },
-					Question = $"(Round {RoundNumber}) The worst Halloween costume for a young child",
+					Question = Question,
 					Answer = new JuiceboxAnswer
 					{
 						Form = new List<JuiceboxFormControl>
@@ -72,17 +75,63 @@ public static class GameState
 					},
 				} );
 
-				_receivedAllAnswers = new TaskCompletionSource();
 				Players.ForEach( p => p.Answer = null );
+				_receivedAllAnswers = new TaskCompletionSource();
 				await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllAnswers.Task );
 
-				CurrentScreen = GameScreen.QuestionResults;
-				_session.Display( new JuiceboxDisplay
+				var receivedAnyAnswers = Players.Any( p => !string.IsNullOrEmpty( p.Answer ) );
+				if ( receivedAnyAnswers )
 				{
-					RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber },
-				} );
+					CurrentScreen = GameScreen.Voting;
+					_session.Display( new JuiceboxDisplay
+					{
+						RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60 },
+						Question = Question,
+						Answer = new JuiceboxAnswer
+						{
+							Form = new List<JuiceboxFormControl>
+							{
+								new JuiceboxRadioGroup
+								{
+									Key = "vote",
+									Label = "Answers",
+									Options = Players
+										.Where( p => !string.IsNullOrEmpty( p.Answer ) )
+										.Select( p => new JuiceboxRadioOption { Label = p.Answer, Value = p.Name } )
+										.OrderBy( _ => Guid.NewGuid() )
+										.ToList(),
+								},
+							},
+						},
+					} );
 
-				await Task.Delay( 10000 );
+					Players.ForEach( p =>
+					{
+						p.Vote = null;
+						p.VotesReceived = 0;
+					} );
+					_receivedAllVotes = new TaskCompletionSource();
+					await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllVotes.Task );
+
+					foreach ( var player in Players )
+					{
+						var votedFor = FindPlayer( player.Vote );
+						if ( votedFor != null )
+						{
+							votedFor.VotesReceived++;
+							votedFor.Score++;
+						}
+					}
+
+					CurrentScreen = GameScreen.Results;
+					_session.Display( new JuiceboxDisplay
+					{
+						RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber },
+					} );
+
+					await Task.Delay( 15000 );
+				}
+
 				RoundNumber++;
 
 			}
@@ -95,6 +144,11 @@ public static class GameState
 		{
 			Log.Error( e );
 		}
+	}
+
+	private static GamePlayer FindPlayer( string name )
+	{
+		return Players.Find( p => string.Equals( p.Name, name, StringComparison.InvariantCultureIgnoreCase ) );
 	}
 
 	private static void RegisterNewPlayers()
@@ -173,37 +227,74 @@ public static class GameState
 
 	private static void SessionResponseReceived( JuiceboxSession session, JuiceboxPlayer player, Dictionary<string, string> data )
 	{
-		var gamePlayer = Players.Find( p => p.Name == player.Name );
+		var gamePlayer = FindPlayer( player.Name );
 		if ( gamePlayer == null )
 		{
 			Log.Warning( $"Received response from {player.Name}, but they have no GamePlayer!" );
 			return;
 		}
 
-		if ( data == null || !data.TryGetValue( "answer", out var answer ) )
+		if ( CurrentScreen == GameScreen.QuestionPrompt )
 		{
-			Log.Warning( $"Received response from {player.Name}, but it's missing the answer key" );
+			if ( data == null || !data.TryGetValue( "answer", out var answer ) )
+			{
+				Log.Warning( $"Received answer from {player.Name}, but it's missing the answer key" );
+				return;
+			}
+
+			if ( string.IsNullOrWhiteSpace( answer ) )
+			{
+				Log.Warning( $"Received answer from {player.Name}, but it's blank" );
+				return;
+			}
+
+			if ( !string.IsNullOrEmpty( gamePlayer.Answer ) )
+			{
+				Log.Warning( $"Received answer from {player.Name}, but they already answered this question" );
+				return;
+			}
+
+			gamePlayer.Answer = answer;
+
+			if ( Players.All( p => !string.IsNullOrEmpty( p.Answer ) ) )
+			{
+				_receivedAllAnswers?.TrySetResult();
+			}
+
 			return;
 		}
 
-		if ( string.IsNullOrWhiteSpace( answer ) )
+		if ( CurrentScreen == GameScreen.Voting )
 		{
-			Log.Warning( $"Received response from {player.Name}, but it's blank" );
+			if ( data == null || !data.TryGetValue( "vote", out var vote ) )
+			{
+				Log.Warning( $"Received vote from {player.Name}, but it's missing the vote key" );
+				return;
+			}
+
+			if ( string.IsNullOrWhiteSpace( vote ) )
+			{
+				Log.Warning( $"Received vote from {player.Name}, but it's blank" );
+				return;
+			}
+
+			if ( !string.IsNullOrEmpty( gamePlayer.Vote ) )
+			{
+				Log.Warning( $"Received vote from {player.Name}, but they already voted" );
+				return;
+			}
+
+			gamePlayer.Vote = vote;
+
+			if ( Players.All( p => !string.IsNullOrEmpty( p.Vote ) ) )
+			{
+				_receivedAllVotes?.TrySetResult();
+			}
+
 			return;
 		}
 
-		if ( !string.IsNullOrEmpty( gamePlayer.Answer ) )
-		{
-			Log.Warning( $"Received answer from {player.Name}, but they already answered this question" );
-			return;
-		}
-
-		gamePlayer.Answer = answer;
-
-		if ( Players.All( p => !string.IsNullOrEmpty( p.Answer ) ) )
-		{
-			_receivedAllAnswers?.TrySetResult();
-		}
+		Log.Warning( $"Received response from {player.Name}, but don't know what to do with it in state {CurrentScreen}" );
 	}
 
 	private static void SessionActionReceived( JuiceboxSession session, JuiceboxPlayer player, string key )

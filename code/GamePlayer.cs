@@ -11,6 +11,8 @@ public class GamePlayer : IEquatable<GamePlayer>
 	public bool IsConnected => _player.IsConnected;
 	public int Score { get; set; }
 	public string Answer { get; set; }
+	public string Vote { get; set; }
+	public int VotesReceived { get; set; }
 
 	public GamePlayer( JuiceboxPlayer player )
 	{
