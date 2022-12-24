@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Facepunch.Juicebox;
 
-public partial class Juicebox : Game
+public partial class Juicebox : GameManager
 {
 	public override void ClientSpawn()
 	{
-		Local.Hud?.Delete( true );
-		Local.Hud = new UI.Hud();
+		Game.RootPanel?.Delete( true );
+		Game.RootPanel = new UI.Hud();
 
 		base.ClientSpawn();
 	}
 
-	public override void ClientJoined( Client client )
+	public override void ClientJoined( IClient client )
 	{
 		base.ClientJoined( client );
 

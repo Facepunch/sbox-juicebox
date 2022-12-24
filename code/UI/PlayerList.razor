@@ -32,6 +32,6 @@
 @code {
     protected override int BuildHash()
     {
-        return HashCode.Combine(GameState.Players, GameState.Players.Aggregate(0, (c, p) => c + HashCode.Combine(p, p.IsConnected)));
+        return HashCode.Combine(Header, ShowScore, GameState.Players, GameState.Players.Aggregate(0, (c, p) => c + HashCode.Combine(p, p.IsConnected)));
     }
 }

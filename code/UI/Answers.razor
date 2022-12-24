@@ -9,6 +9,7 @@
 
 @code {
     public bool ShowResults { get; set; } = false;
+    public bool ImageAnswers { get; set; } = false;
 }
 
 <root>
@@ -30,7 +31,14 @@
                 </div>
             }
             <div class="answer-body">
-                <h1 class="answer-text">@player.Answer</h1>
+                @if (ImageAnswers)
+                {
+                    <img class="answer-image" src="@player.Answer" />
+                }
+                else
+                {
+                    <h1 class="answer-text">@player.Answer</h1>
+                }
             </div>
             @if (ShowResults)
             {

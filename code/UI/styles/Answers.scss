@@ -19,7 +19,7 @@ Answers {
     flex-direction: column;
     padding: 2rem;
     width: 600px;
-    height: 250px;
+    min-height: 250px;
     position: relative;
 
     &.green {
@@ -66,6 +66,11 @@ Answers {
         font-size: 32px;
         font-weight: bold;
         text-transform: uppercase;
+      }
+
+      .answer-image {
+        max-width: 100%;
+        max-height: 100%;
       }
     }
     .answer-footer {

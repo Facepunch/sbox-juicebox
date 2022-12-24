@@ -10,7 +10,7 @@ namespace Facepunch.Juicebox;
 
 public enum GameScreen
 {
-	SettingUp, WaitingForPlayers, QuestionPrompt, Voting, Results,
+	SettingUp, WaitingForPlayers, QuestionPrompt, Voting, Results, Error,
 }
 
 public static class GameState
@@ -42,6 +42,7 @@ public static class GameState
 
 		if ( _session == null || !_session.IsOpen )
 		{
+			CurrentScreen = GameScreen.Error;
 			return;
 		}
 
@@ -64,19 +65,20 @@ public static class GameState
 				CurrentScreen = GameScreen.QuestionPrompt;
 				_session.Display( new JuiceboxDisplay
 				{
-					RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60, },
-					Question = Question,
-					Answer = new JuiceboxAnswer
+					Header = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60, },
+					Stage = new JuiceboxStage
 					{
-						Form = new List<JuiceboxFormControl>
+						Title = Question,
+					},
+					Form = new JuiceboxForm
+					{
+						Controls = new List<JuiceboxFormControl>
 						{
-							new JuiceboxInput
+							new JuiceboxDrawing
 							{
 								Key = "answer",
-								Label = "Answer",
-								MaxLength = 100,
-								Placeholder = "Type your answer...",
-								Value = "",
+								Width = 640,
+								Height = 480,
 							},
 						},
 					},
@@ -92,16 +94,18 @@ public static class GameState
 					CurrentScreen = GameScreen.Voting;
 					_session.Display( new JuiceboxDisplay
 					{
-						RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60 },
-						Question = Question,
-						Answer = new JuiceboxAnswer
+						Header = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60 },
+						Stage = new JuiceboxStage
 						{
-							Form = new List<JuiceboxFormControl>
+							Title = Question,
+						},
+						Form = new JuiceboxForm
+						{
+							Controls = new List<JuiceboxFormControl>
 							{
 								new JuiceboxRadioGroup
 								{
 									Key = "vote",
-									Label = "Answers",
 									Options = Players
 										.Where( p => !string.IsNullOrEmpty( p.Answer ) )
 										.Select( p => new JuiceboxRadioOption { Label = p.Answer, Value = p.Name } )
@@ -142,7 +146,7 @@ public static class GameState
 					CurrentScreen = GameScreen.Results;
 					_session.Display( new JuiceboxDisplay
 					{
-						RoundHeader = new JuiceboxHeader { RoundNumber = RoundNumber },
+						Header = new JuiceboxHeader { RoundNumber = RoundNumber },
 					} );
 
 					await Task.Delay( 15000 );
@@ -215,17 +219,23 @@ public static class GameState
 				{
 					_session.Display( new JuiceboxDisplay
 					{
-						Question = "You are the host!\nRequires minimum 2 players.",
+						Stage = new JuiceboxStage
+						{
+							Title = "You are the host!\nRequires minimum 2 players.",
+						},
 					}, HostPlayer );
 				}
 				else
 				{
 					_session.Display( new JuiceboxDisplay
 					{
-						Question = "Is everybody ready?",
-						Answer = new JuiceboxAnswer
+						Stage = new JuiceboxStage
 						{
-							Form = new List<JuiceboxFormControl>
+							Title = "Is everybody ready?",
+						},
+						Form = new JuiceboxForm
+						{
+							Controls = new List<JuiceboxFormControl>
 							{
 								new JuiceboxButton
 								{
@@ -256,7 +266,10 @@ public static class GameState
 
 			_session.Display( new JuiceboxDisplay
 			{
-				Question = "Waiting for players..."
+				Stage = new JuiceboxStage
+				{
+					Title = "Waiting for players...",
+				},
 			} );
 		}
 		catch ( Exception e )

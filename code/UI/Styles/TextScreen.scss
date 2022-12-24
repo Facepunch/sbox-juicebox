@@ -1,0 +1,16 @@
+﻿@import "./variables/_colours.scss";
+
+TextScreen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
+        display: flex;
+        font-size: 32px;
+        margin-bottom: 64px;
+    }
+}

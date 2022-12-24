@@ -10,6 +10,7 @@
     @switch (GameState.CurrentScreen)
     {
         case GameScreen.SettingUp:
+            <TextScreen Header="Creating session..." />
             break;
 
         case GameScreen.WaitingForPlayers:
@@ -22,12 +23,20 @@
 
         case GameScreen.Voting:
             <Question />
-            <Answers />
+            <Answers ImageAnswers />
             return;
 
         case GameScreen.Results:
             <PlayerList Header="Current Scores" ShowScore />
-            <Answers ShowResults />
+            <Answers ImageAnswers ShowResults />
+            break;
+            
+        case GameScreen.Error:
+            <TextScreen Header="Something went wrong... please reload the game." />
+            break;
+
+        default:
+            <TextScreen Header="State Not Implemeneted" />
             break;
     }
 </root>
