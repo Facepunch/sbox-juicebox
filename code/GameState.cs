@@ -134,15 +134,6 @@ public static class GameState
 						}
 					}
 
-					var bestAnswer = Players
-						.OrderByDescending( p => p.VotesReceived )
-						.Select( p => p.Answer )
-						.FirstOrDefault();
-					if ( bestAnswer != null )
-					{
-						SpeakWinningAnswer( Question, bestAnswer );
-					}
-
 					CurrentScreen = GameScreen.Results;
 					_session.Display( new JuiceboxDisplay
 					{
@@ -158,27 +149,6 @@ public static class GameState
 		catch ( OperationCanceledException )
 		{
 			// ignore
-		}
-		catch ( Exception e )
-		{
-			Log.Error( e );
-		}
-	}
-
-	private static readonly Regex PromptPattern = new Regex( @"^(.*?)(_+)(.*?)$" );
-	private static async void SpeakWinningAnswer( string question, string answer )
-	{
-		try
-		{
-			var match = PromptPattern.Match( question );
-			if ( match.Success )
-			{
-				await Juicebox.Say( match.Groups[1] + answer + match.Groups[3] );
-			}
-			else
-			{
-				await Juicebox.Say( question + " " + answer );
-			}
 		}
 		catch ( Exception e )
 		{
