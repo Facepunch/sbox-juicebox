@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.Juicebox;
@@ -28,6 +27,7 @@ public static class GameState
 	public static string Question { get; private set; } = "The worst Halloween costume for a young child";
 
 	private static JuiceboxSession _session;
+	private static bool _sessionStarted;
 	private static TaskCompletionSource _receivedAllAnswers;
 	private static TaskCompletionSource _receivedAllVotes;
 	private static Queue<string> _questions;
@@ -40,10 +40,14 @@ public static class GameState
 			Initialize();
 		}
 
-		if ( _session == null || !_session.IsOpen )
+		if ( CurrentScreen == GameScreen.Error )
 		{
-			CurrentScreen = GameScreen.Error;
 			return;
+		}
+
+		if ( _sessionStarted && (_session == null || !_session.IsOpen) )
+		{
+			SwitchScreen( GameScreen.Error );
 		}
 
 		RegisterNewPlayers();
@@ -62,8 +66,8 @@ public static class GameState
 
 				Question = _questions.Dequeue();
 
-				CurrentScreen = GameScreen.QuestionPrompt;
-				_session.Display( new JuiceboxDisplay
+				SwitchScreen( GameScreen.QuestionPrompt );
+				await _session.Display( new JuiceboxDisplay
 				{
 					Header = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60, },
 					Stage = new JuiceboxStage
@@ -74,11 +78,12 @@ public static class GameState
 					{
 						Controls = new List<JuiceboxFormControl>
 						{
-							new JuiceboxDrawing
+							new JuiceboxInput
 							{
 								Key = "answer",
-								Width = 640,
-								Height = 480,
+								Label = "Response",
+								Placeholder = "Type your response...",
+								MaxLength = 100,
 							},
 						},
 					},
@@ -87,12 +92,12 @@ public static class GameState
 				Players.ForEach( p => p.Answer = null );
 				_receivedAllAnswers = new TaskCompletionSource();
 				await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllAnswers.Task );
-				
+
 				var receivedAnyAnswers = Players.Any( p => !string.IsNullOrEmpty( p.Answer ) );
 				if ( receivedAnyAnswers )
 				{
-					CurrentScreen = GameScreen.Voting;
-					_session.Display( new JuiceboxDisplay
+					SwitchScreen( GameScreen.Voting );
+					await _session.Display( new JuiceboxDisplay
 					{
 						Header = new JuiceboxHeader { RoundNumber = RoundNumber, RoundTime = 60 },
 						Stage = new JuiceboxStage
@@ -134,8 +139,8 @@ public static class GameState
 						}
 					}
 
-					CurrentScreen = GameScreen.Results;
-					_session.Display( new JuiceboxDisplay
+					SwitchScreen( GameScreen.Results );
+					await _session.Display( new JuiceboxDisplay
 					{
 						Header = new JuiceboxHeader { RoundNumber = RoundNumber },
 					} );
@@ -154,6 +159,16 @@ public static class GameState
 		{
 			Log.Error( e );
 		}
+	}
+
+	private static void SwitchScreen( GameScreen newScreen )
+	{
+		if ( CurrentScreen == GameScreen.Error )
+		{
+			return; // can't switch away from the error screen
+		}
+
+		CurrentScreen = newScreen;
 	}
 
 	private static GamePlayer FindPlayer( string name )
@@ -232,9 +247,10 @@ public static class GameState
 			await _session.Start();
 			_session.OnActionReceived += SessionActionReceived;
 			_session.OnResponseReceived += SessionResponseReceived;
-			CurrentScreen = GameScreen.WaitingForPlayers;
+			SwitchScreen( GameScreen.WaitingForPlayers );
+			_sessionStarted = true;
 
-			_session.Display( new JuiceboxDisplay
+			await _session.Display( new JuiceboxDisplay
 			{
 				Stage = new JuiceboxStage
 				{
@@ -244,6 +260,7 @@ public static class GameState
 		}
 		catch ( Exception e )
 		{
+			SwitchScreen( GameScreen.Error );
 			Log.Error( e );
 		}
 	}
