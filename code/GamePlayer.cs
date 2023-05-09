@@ -1,5 +1,5 @@
 ﻿using System;
-using Sandbox.Juicebox;
+using Juicebox;
 
 namespace Facepunch.Juicebox;
 

@@ -10,7 +10,8 @@
   "ResourcePaths": [],
   "HasCode": true,
   "CodePath": "/code/",
-  "RootNamespace": null,
+  "PackageReferences": [],
+  "EditorReferences": null,
   "Metadata": {
     "MaxPlayers": 64,
     "MinPlayers": 1,
@@ -22,6 +23,12 @@
     "RankType": "None",
     "PerMapRanking": false,
     "LeaderboardType": "None",
-    "ProjectTemplate": null
+    "ProjectTemplate": null,
+    "CsProjName": "",
+    "HttpAllowList": [
+      "https://juicebox.facepunch.com/",
+      "https://rohan-pubsubhub.loca.lt/",
+      "wss://sbox-party-ws.webpubsub.azure.com/"
+    ]
   }
 }
