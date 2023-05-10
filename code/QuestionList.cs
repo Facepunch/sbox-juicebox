@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace Facepunch.Juicebox;
+
 public class QuestionList
 {
 	[JsonPropertyName( "questions" )]

@@ -23,7 +23,7 @@ public partial class Juicebox : GameManager
 
 		var spawnpoints = Entity.All.OfType<SpawnPoint>();
 
-		var randomSpawnPoint = spawnpoints.OrderBy( x => Guid.NewGuid() ).FirstOrDefault();
+		var randomSpawnPoint = spawnpoints.MinBy( x => Guid.NewGuid() );
 
 		if ( randomSpawnPoint != null )
 		{
@@ -33,7 +33,7 @@ public partial class Juicebox : GameManager
 		}
 	}
 
-	[Event.Tick.Client]
+	[GameEvent.Tick.Client]
 	public static void ServerTick()
 	{
 		GameState.Update();
