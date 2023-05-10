@@ -33,9 +33,16 @@ public partial class Juicebox : GameManager
 		}
 	}
 
+	public override void Shutdown()
+	{
+		base.Shutdown();
+
+		GameSession.Shutdown();
+	}
+
 	[GameEvent.Tick.Client]
 	public static void ServerTick()
 	{
-		GameState.Update();
+		GameSession.Update();
 	}
 }

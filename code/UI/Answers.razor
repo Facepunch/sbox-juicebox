@@ -14,7 +14,7 @@
 
 <root>
     
-    @foreach (var player in GameState.Players)
+    @foreach (var player in GameSession.Players)
     {
         if (string.IsNullOrEmpty(player.Answer))
         {

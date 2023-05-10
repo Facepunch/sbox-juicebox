@@ -16,7 +16,7 @@
 <root>
     <h1 class="styled">@Header</h1>
     <div class="players-container">
-        @foreach (var player in GameState.Players)
+        @foreach (var player in GameSession.Players)
         {
             <div class="styled player-row @(ShowScore ? "show-score" : "")">
                 <span class="player-name">@player.Name</span>
@@ -32,6 +32,6 @@
 @code {
     protected override int BuildHash()
     {
-        return HashCode.Combine(Header, ShowScore, GameState.Players, GameState.Players.Aggregate(0, (c, p) => c + HashCode.Combine(p, p.IsConnected)));
+        return HashCode.Combine(Header, ShowScore, GameSession.Players, GameSession.Players.Aggregate(0, (c, p) => c + HashCode.Combine(p, p.IsConnected)));
     }
 }

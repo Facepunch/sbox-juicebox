@@ -5,10 +5,10 @@ namespace Facepunch.Juicebox;
 
 public class GamePlayer : IEquatable<GamePlayer>
 {
-	private readonly JuiceboxPlayer _player;
+	public readonly JuiceboxPlayer JuiceboxPlayer;
 
-	public string Name => _player.Name;
-	public bool IsConnected => _player.IsConnected;
+	public string Name => JuiceboxPlayer.Name;
+	public bool IsConnected => JuiceboxPlayer.IsConnected;
 	public int Score { get; set; }
 	public string Answer { get; set; }
 	public string Vote { get; set; }
@@ -16,7 +16,7 @@ public class GamePlayer : IEquatable<GamePlayer>
 
 	public GamePlayer( JuiceboxPlayer player )
 	{
-		_player = player ?? throw new ArgumentNullException( nameof(player) );
+		JuiceboxPlayer = player ?? throw new ArgumentNullException( nameof(player) );
 	}
 
 	public bool Equals(GamePlayer other)
@@ -31,7 +31,7 @@ public class GamePlayer : IEquatable<GamePlayer>
 			return true;
 		}
 
-		return _player.Equals(other._player);
+		return JuiceboxPlayer.Equals(other.JuiceboxPlayer);
 	}
 
 	public override bool Equals(object obj)
@@ -56,6 +56,16 @@ public class GamePlayer : IEquatable<GamePlayer>
 
 	public override int GetHashCode()
 	{
-		return _player.GetHashCode();
+		return JuiceboxPlayer.GetHashCode();
+	}
+
+	public static bool operator ==(GamePlayer left, GamePlayer right)
+	{
+		return Equals(left, right);
+	}
+
+	public static bool operator !=(GamePlayer left, GamePlayer right)
+	{
+		return !Equals(left, right);
 	}
 }

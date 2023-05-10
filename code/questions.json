@@ -1,90 +1,348 @@
 ﻿{
   "questions": [
-    "If you can't afford ______ , you can't afford me.",
-    "I love you all, but please stop ______.",
-    "I'm not a racist, I'm a ______.",
-    "Sex is an integral part of ______.",
-    "What is the best way to prevent phallic contact?",
-    "How do you react when someone licks your hairy ass?",
-    "______ is better than nothing.",
-    "What got my grandmother so mad?",
-    "What's the number one Google search term in France?",
-    "Why am I still single?",
-    "What's your greatest weakness?",
-    "If racism doesn't get you fired, try ______!",
-    "What's a bestseller on Amazon?",
-    "What is the main obstacle to a peaceful and just world?",
-    "What finally ended the cold war?",
-    "What's my favorite childhood memory?",
-    "I want my child to grow up in a world where ______ is the norm.",
-    "What's the top cause of divorce this year?",
-    "This summer I got sick of ______.",
-    "Every step towards ______ comes with a price.",
-    "It looks like ______ will cure cancer.",
-    "What keeps getting better?",
-    "God doesn't like being ambiguous. So he gave us ______.",
-    "______ is the greatest aphrodisiac?",
-    "What is your favorite new sensation?",
-    "______ is the answer to all our problems.",
-    "I think they used to have a word for ______.",
-    "What's the nearest thing to magic?",
-    "______ : To be continued.",
-    "I hate being left out of ______.",
-    "I'm not just your typical teenager. I have a taste for ______.",
-    "I've discovered a new branch of science: ______.",
-    "______: That's when Mom and Dad started laughing.",
-    "Why am I addicted to ______?",
-    "All I want for Christmas is ______",
-    "What's your favorite porno genre?",
-    "What saved mankind?",
-    "What helped you defeat the bad guys?",
-    "The best part of my new job is probably ______.",
-    "We don't need a miracle. What we need is ______.",
-    "What's the new craze in Paris?",
-    "We need to find a cure for ______.",
-    "It's been over four years since we last sat down and had a serious talk about ______.",
-    "I do not recall ever having had a relationship ending without ______.",
-    "It's been 3 years since I last tasted ______.",
-    "What's the most popular sex position in America?",
-    "What does my mom use to relieve anxiety?",
-    "The first time I had sex was during ______.",
-    "The secret to success in this economy is ______.",
-    "What won't kill you?",
-    "The truth is, everyone loves ______.",
-    "I've come to the conclusion that ______ is the only way to be a successful businessman.",
-    "I like ______. It's simple.",
-    "I never understood ______.",
-    "My father used to tell me to stop ______.",
-    "The Supreme Court ruled in favor of ______.",
-    "All I want is my ______ back.",
-    "What's the sexiest part of the wedding?",
-    "______ : it's an important issue.",
-    "I didn't know we had a rule banning ______.",
-    "I'm no doctor, but you wouldn't believe my experience with ______.",
-    "What's the next best thing to the internet?",
-    "What do you have hiding in your sock drawer?",
-    "I never thought I was ready for ______ .",
-    "The future of the human race depends on ______.",
-    "The new trend of 2022: ______!",
-    "What could have convinced her to marry me?",
-    "That's not ______ ! That's a gun!",
-    "The only thing worse than a cold winter is a summer full of ______.",
-    "I'm a guy who's really into ______.",
-    "There's no such thing as too much ______.",
-    "What's the easiest way to treat an allergic reaction?",
-    "What's the best way to spend the holidays?",
-    "I'm perfectly fine without ______.",
-    "What's the only thing sexier than a boner?",
-    "______ : Your problem. Not mine.",
-    "______ : It was one of those great ideas we had for a startup.",
-    "What makes a man hard?",
-    "Our prime minister has signed a petition to ban ______.",
-    "What's bothering you the most in the shower?",
-    "I'm gonna take you back to the future and show you ______.",
-    "It's illegal to sell ______ in California.",
-    "My shirt smells like ______.",
-    "When I was a kid, we used to play Cowboys and ______.",
-    "There's nothing more American than ______.",
-    "______ heals all wounds."
+    {
+      "question": "If you can't afford ______ , you can't afford me.",
+      "drawn": true
+    },
+    {
+      "question": "I love you all, but please stop ______.",
+      "drawn": true
+    },
+    {
+      "question": "I'm not a racist, I'm a ______.",
+      "drawn": true
+    },
+    {
+      "question": "Sex is an integral part of ______.",
+      "drawn": true
+    },
+    {
+      "question": "What is the best way to prevent phallic contact?",
+      "drawn": true
+    },
+    {
+      "question": "How do you react when someone licks your hairy ass?",
+      "drawn": true
+    },
+    {
+      "question": "______ is better than nothing.",
+      "drawn": true
+    },
+    {
+      "question": "What got my grandmother so mad?",
+      "drawn": true
+    },
+    {
+      "question": "What's the number one Google search term in France?",
+      "drawn": true
+    },
+    {
+      "question": "Why am I still single?",
+      "drawn": true
+    },
+    {
+      "question": "What's your greatest weakness?",
+      "drawn": true
+    },
+    {
+      "question": "If racism doesn't get you fired, try ______!",
+      "drawn": true
+    },
+    {
+      "question": "What's a bestseller on Amazon?",
+      "drawn": true
+    },
+    {
+      "question": "What is the main obstacle to a peaceful and just world?",
+      "drawn": true
+    },
+    {
+      "question": "What finally ended the cold war?",
+      "drawn": true
+    },
+    {
+      "question": "What's my favorite childhood memory?",
+      "drawn": true
+    },
+    {
+      "question": "I want my child to grow up in a world where ______ is the norm.",
+      "drawn": true
+    },
+    {
+      "question": "What's the top cause of divorce this year?",
+      "drawn": true
+    },
+    {
+      "question": "This summer I got sick of ______.",
+      "drawn": true
+    },
+    {
+      "question": "Every step towards ______ comes with a price.",
+      "drawn": true
+    },
+    {
+      "question": "It looks like ______ will cure cancer.",
+      "drawn": true
+    },
+    {
+      "question": "What keeps getting better?",
+      "drawn": true
+    },
+    {
+      "question": "God doesn't like being ambiguous. So he gave us ______.",
+      "drawn": true
+    },
+    {
+      "question": "______ is the greatest aphrodisiac?",
+      "drawn": true
+    },
+    {
+      "question": "What is your favorite new sensation?",
+      "drawn": true
+    },
+    {
+      "question": "______ is the answer to all our problems.",
+      "drawn": true
+    },
+    {
+      "question": "I think they used to have a word for ______.",
+      "drawn": true
+    },
+    {
+      "question": "What's the nearest thing to magic?",
+      "drawn": true
+    },
+    {
+      "question": "______ : To be continued.",
+      "drawn": true
+    },
+    {
+      "question": "I hate being left out of ______.",
+      "drawn": true
+    },
+    {
+      "question": "I'm not just your typical teenager. I have a taste for ______.",
+      "drawn": true
+    },
+    {
+      "question": "I've discovered a new branch of science: ______.",
+      "drawn": true
+    },
+    {
+      "question": "______: That's when Mom and Dad started laughing.",
+      "drawn": true
+    },
+    {
+      "question": "Why am I addicted to ______?",
+      "drawn": true
+    },
+    {
+      "question": "All I want for Christmas is ______",
+      "drawn": true
+    },
+    {
+      "question": "What's your favorite porno genre?",
+      "drawn": true
+    },
+    {
+      "question": "What saved mankind?",
+      "drawn": true
+    },
+    {
+      "question": "What helped you defeat the bad guys?",
+      "drawn": true
+    },
+    {
+      "question": "The best part of my new job is probably ______.",
+      "drawn": true
+    },
+    {
+      "question": "We don't need a miracle. What we need is ______.",
+      "drawn": true
+    },
+    {
+      "question": "What's the new craze in Paris?",
+      "drawn": true
+    },
+    {
+      "question": "We need to find a cure for ______.",
+      "drawn": true
+    },
+    {
+      "question": "It's been over four years since we last sat down and had a serious talk about ______.",
+      "drawn": true
+    },
+    {
+      "question": "I do not recall ever having had a relationship ending without ______.",
+      "drawn": true
+    },
+    {
+      "question": "It's been 3 years since I last tasted ______.",
+      "drawn": true
+    },
+    {
+      "question": "What's the most popular sex position in America?",
+      "drawn": true
+    },
+    {
+      "question": "What does my mom use to relieve anxiety?",
+      "drawn": true
+    },
+    {
+      "question": "The first time I had sex was during ______.",
+      "drawn": true
+    },
+    {
+      "question": "The secret to success in this economy is ______.",
+      "drawn": true
+    },
+    {
+      "question": "What won't kill you?",
+      "drawn": true
+    },
+    {
+      "question": "The truth is, everyone loves ______.",
+      "drawn": true
+    },
+    {
+      "question": "I've come to the conclusion that ______ is the only way to be a successful businessman.",
+      "drawn": true
+    },
+    {
+      "question": "I like ______. It's simple.",
+      "drawn": true
+    },
+    {
+      "question": "I never understood ______.",
+      "drawn": true
+    },
+    {
+      "question": "My father used to tell me to stop ______.",
+      "drawn": true
+    },
+    {
+      "question": "The Supreme Court ruled in favor of ______.",
+      "drawn": true
+    },
+    {
+      "question": "All I want is my ______ back.",
+      "drawn": true
+    },
+    {
+      "question": "What's the sexiest part of the wedding?",
+      "drawn": true
+    },
+    {
+      "question": "______ : it's an important issue.",
+      "drawn": true
+    },
+    {
+      "question": "I didn't know we had a rule banning ______.",
+      "drawn": true
+    },
+    {
+      "question": "I'm no doctor, but you wouldn't believe my experience with ______.",
+      "drawn": true
+    },
+    {
+      "question": "What's the next best thing to the internet?",
+      "drawn": true
+    },
+    {
+      "question": "What do you have hiding in your sock drawer?",
+      "drawn": true
+    },
+    {
+      "question": "I never thought I was ready for ______ .",
+      "drawn": true
+    },
+    {
+      "question": "The future of the human race depends on ______.",
+      "drawn": true
+    },
+    {
+      "question": "The new trend of 2022: ______!",
+      "drawn": true
+    },
+    {
+      "question": "What could have convinced her to marry me?",
+      "drawn": true
+    },
+    {
+      "question": "That's not ______ ! That's a gun!",
+      "drawn": true
+    },
+    {
+      "question": "The only thing worse than a cold winter is a summer full of ______.",
+      "drawn": true
+    },
+    {
+      "question": "I'm a guy who's really into ______.",
+      "drawn": true
+    },
+    {
+      "question": "There's no such thing as too much ______.",
+      "drawn": true
+    },
+    {
+      "question": "What's the easiest way to treat an allergic reaction?",
+      "drawn": true
+    },
+    {
+      "question": "What's the best way to spend the holidays?",
+      "drawn": true
+    },
+    {
+      "question": "I'm perfectly fine without ______.",
+      "drawn": true
+    },
+    {
+      "question": "What's the only thing sexier than a boner?",
+      "drawn": true
+    },
+    {
+      "question": "______ : Your problem. Not mine.",
+      "drawn": true
+    },
+    {
+      "question": "______ : It was one of those great ideas we had for a startup.",
+      "drawn": true
+    },
+    {
+      "question": "What makes a man hard?",
+      "drawn": true
+    },
+    {
+      "question": "Our prime minister has signed a petition to ban ______.",
+      "drawn": true
+    },
+    {
+      "question": "What's bothering you the most in the shower?",
+      "drawn": true
+    },
+    {
+      "question": "I'm gonna take you back to the future and show you ______.",
+      "drawn": true
+    },
+    {
+      "question": "It's illegal to sell ______ in California.",
+      "drawn": true
+    },
+    {
+      "question": "My shirt smells like ______.",
+      "drawn": true
+    },
+    {
+      "question": "When I was a kid, we used to play Cowboys and ______.",
+      "drawn": true
+    },
+    {
+      "question": "There's nothing more American than ______.",
+      "drawn": true
+    },
+    {
+      "question": "______ heals all wounds.",
+      "drawn": true
+    }
   ]
 }

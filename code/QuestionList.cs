@@ -6,5 +6,14 @@ namespace Facepunch.Juicebox;
 public class QuestionList
 {
 	[JsonPropertyName( "questions" )]
-	public List<string> Questions { get; set; }
+	public List<QuestionEntry> Questions { get; set; }
+}
+
+public class QuestionEntry
+{
+	[JsonPropertyName("question")]
+	public string Question { get; set; }
+
+	[JsonPropertyName("drawn")]
+	public bool Drawn { get; set; }
 }

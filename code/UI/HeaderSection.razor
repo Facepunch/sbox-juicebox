@@ -9,11 +9,11 @@
 
 <root>
     <div class="container is-spectate">
-        @if (!string.IsNullOrEmpty(GameState.JoinCode))
+        @if (!string.IsNullOrEmpty(GameSession.JoinCode))
         {
             <span class="subtitle">Join</span>
             <div class="spectate-code">
-                <span>@GameState.JoinCode</span>
+                <span>@GameSession.JoinCode</span>
             </div>
             <span class="subtitle">juicebox.facepunch.com</span>
         }
@@ -26,14 +26,14 @@
         </div>
     </div>
     <div class="container is-round-info">
-        @if (GameState.CurrentScreen >= GameScreen.QuestionPrompt)
+        @if (GameSession.CurrentScreen >= GameScreen.QuestionPrompt)
         {
             <div class="round-info">
                 <div class="round-number">
-                    <span>@GameState.RoundNumber</span>
+                    <span>@GameSession.RoundNumber</span>
                 </div>
                 <div class="round-time">
-                    <span>@GameState.RoundTimer</span>
+                    <span>@GameSession.RoundTimer</span>
                 </div>
             </div>
         }
@@ -43,6 +43,6 @@
 @code {
     protected override int BuildHash()
     {
-        return HashCode.Combine(GameState.CurrentScreen, GameState.JoinCode, GameState.RoundNumber, GameState.RoundTimer);
+        return HashCode.Combine(GameSession.CurrentScreen, GameSession.JoinCode, GameSession.RoundNumber, GameSession.RoundTimer);
     }
 }
