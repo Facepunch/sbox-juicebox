@@ -23,12 +23,12 @@
 
         case GameScreen.Voting:
             <Question />
-            <Answers ImageAnswers />
+            <Answers ImageAnswers="@GameState.ImageAnswers" />
             return;
 
         case GameScreen.Results:
             <PlayerList Header="Current Scores" ShowScore />
-            <Answers ImageAnswers ShowResults />
+            <Answers ImageAnswers="@GameState.ImageAnswers" ShowResults />
             break;
             
         case GameScreen.Error:
@@ -44,6 +44,6 @@
 @code {
     protected override int BuildHash()
     {
-        return HashCode.Combine( GameState.CurrentScreen );
+        return HashCode.Combine( GameState.CurrentScreen, GameState.ImageAnswers );
     }
 }

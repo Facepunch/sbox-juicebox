@@ -24,6 +24,8 @@ public static class GameState
 
 	public static JuiceboxPlayer HostPlayer { get; private set; } = null;
 
+	public static bool ImageAnswers { get; private set; } = false;
+
 	public static string Question { get; private set; } = "The worst Halloween costume for a young child";
 
 	private static JuiceboxSession _session;
