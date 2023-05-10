@@ -93,8 +93,6 @@ public sealed class JuiceboxSession : IDisposable
 		JoinPassword = createResponse.JoinPassword;
 		IsOpen = true;
 
-		await Connect();
-
 		var thisRef = new WeakReference<JuiceboxSession>( this );
 		PingLoop( thisRef, _cts.Token );
 	}
@@ -164,7 +162,8 @@ public sealed class JuiceboxSession : IDisposable
 		{
 			_webSocket = new WebSocket();
 			await _webSocket.Connect( negotiateResponse.Endpoint );
-			_webSocket.OnDisconnected += ( status, reason ) => Log.Error( $"Lost connection to the Juicebox session ({status}, {reason})" );
+			Log.Info( $"Connected to Juicebox session websocket" );
+			_webSocket.OnDisconnected += ( status, reason ) => Log.Error( $"Lost connection to the Juicebox session websocket ({status}, {reason})" );
 			_webSocket.OnMessageReceived += HandleWebSocketMessage;
 		}
 		catch ( Exception e )

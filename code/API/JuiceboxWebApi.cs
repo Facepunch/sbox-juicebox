@@ -8,8 +8,8 @@ namespace Juicebox;
 
 internal static class JuiceboxWebApi
 {
-	private const string apiEndpoint = "https://rohan-pubsubhub.loca.lt/api/sessions";
-	//private const string apiEndpoint = "https://api.facepunch.com/api/sessions";
+	//private const string apiEndpoint = "https://rohan-pubsubhub.loca.lt/api/sessions";
+	private const string apiEndpoint = "https://juicebox.facepunch.com/api/sessions";
 
 	public class SessionCreateResponse
 	{
