@@ -33,7 +33,7 @@
                     <span>@GameState.RoundNumber</span>
                 </div>
                 <div class="round-time">
-                    <span>00:00</span>
+                    <span>@GameState.RoundTimer</span>
                 </div>
             </div>
         }
@@ -43,6 +43,6 @@
 @code {
     protected override int BuildHash()
     {
-        return HashCode.Combine(GameState.CurrentScreen, GameState.JoinCode, GameState.RoundNumber);
+        return HashCode.Combine(GameState.CurrentScreen, GameState.JoinCode, GameState.RoundNumber, GameState.RoundTimer);
     }
 }

@@ -20,6 +20,25 @@ public static class GameState
 
 	public static int RoundNumber { get; private set; } = 1;
 
+	public static string RoundTimer
+	{
+		get
+		{
+			if ( _roundEnd == null )
+			{
+				return "00:00";
+			}
+
+			var remaining = _roundEnd.Value - DateTimeOffset.UtcNow;
+			if ( remaining.TotalSeconds < 0 )
+			{
+				return "00:00";
+			}
+
+			return $"{remaining.Minutes:00}:{remaining.Seconds:00}";
+		}
+	}
+
 	public static List<GamePlayer> Players { get; private set; } = new List<GamePlayer>();
 
 	public static JuiceboxPlayer HostPlayer { get; private set; } = null;
@@ -33,6 +52,7 @@ public static class GameState
 	private static TaskCompletionSource _receivedAllAnswers;
 	private static TaskCompletionSource _receivedAllVotes;
 	private static Queue<string> _questions;
+	private static DateTimeOffset? _roundEnd;
 
 	public static void Update()
 	{
@@ -93,7 +113,7 @@ public static class GameState
 
 				Players.ForEach( p => p.Answer = null );
 				_receivedAllAnswers = new TaskCompletionSource();
-				await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllAnswers.Task );
+				await Wait( 60, _receivedAllAnswers.Task );
 
 				var receivedAnyAnswers = Players.Any( p => !string.IsNullOrEmpty( p.Answer ) );
 				if ( receivedAnyAnswers )
@@ -129,7 +149,7 @@ public static class GameState
 						p.VotesReceived = 0;
 					} );
 					_receivedAllVotes = new TaskCompletionSource();
-					await GameTask.WhenAny( GameTask.Delay( 60000 ), _receivedAllVotes.Task );
+					await Wait( 60, _receivedAllVotes.Task );
 
 					foreach ( var player in Players )
 					{
@@ -147,7 +167,7 @@ public static class GameState
 						Header = new JuiceboxHeader { RoundNumber = RoundNumber },
 					} );
 
-					await Task.Delay( 15000 );
+					await Wait( 15, null );
 				}
 
 				RoundNumber++;
@@ -265,6 +285,22 @@ public static class GameState
 			SwitchScreen( GameScreen.Error );
 			Log.Error( e );
 		}
+	}
+
+	private static async Task Wait( int seconds, Task skip )
+	{
+		_roundEnd = DateTimeOffset.UtcNow.AddSeconds( seconds );
+		
+		if ( skip != null )
+		{
+			await GameTask.WhenAny( GameTask.Delay( seconds * 1000 ), skip );
+		}
+		else
+		{
+			await GameTask.Delay( seconds * 1000 );
+		}
+
+		_roundEnd = null;
 	}
 
 	private static void SessionResponseReceived( JuiceboxSession session, JuiceboxPlayer player, Dictionary<string, string> data )
