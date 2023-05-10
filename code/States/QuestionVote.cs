@@ -66,7 +66,15 @@ public class QuestionVote : BaseGameState
 		base.OnTimedOut();
 
 		var voteCount = GameSession.Players.Count( p => !string.IsNullOrEmpty( p.Vote ) );
-		GameSession.SwitchState( voteCount > 0 ? new RoundResults() : new QuestionPrompt() );
+		if ( voteCount > 0 )
+		{
+			GameSession.SwitchState( new RoundResults() );
+		}
+		else
+		{
+			GameSession.RoundNumber++;
+			GameSession.SwitchState( new QuestionPrompt() );
+		}
 	}
 
 	public override void OnPlayerResponse( GamePlayer player, Dictionary<string, string> data )

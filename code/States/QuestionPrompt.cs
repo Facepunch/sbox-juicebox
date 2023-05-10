@@ -49,7 +49,15 @@ public class QuestionPrompt : BaseGameState
 		base.OnTimedOut();
 
 		var responseCount = GameSession.Players.Count( p => !string.IsNullOrEmpty( p.Answer ) );
-		GameSession.SwitchState( responseCount >= 2 ? new QuestionVote() : new QuestionPrompt() );
+		if ( responseCount >= 2 )
+		{
+			GameSession.SwitchState( new QuestionVote() );
+		}
+		else
+		{
+			GameSession.RoundNumber++;
+			GameSession.SwitchState( new QuestionPrompt() );
+		}
 	}
 
 	public override void OnPlayerResponse( GamePlayer player, Dictionary<string, string> data )
