@@ -4,7 +4,7 @@ public class RoundResults : BaseGameState
 {
 	public override GameScreen DisplayScreen => GameScreen.Results;
 
-	public override double? TimeoutSeconds => 15;
+	public override double? TimeoutSeconds => 10;
 
 	public override void OnExit()
 	{

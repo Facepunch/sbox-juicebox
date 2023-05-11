@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Sandbox;
 
 namespace Facepunch.Juicebox;
 
 public abstract class BaseGameState
 {
+	[ConVar.Client( "timeout_scale" )]
+	public static float TimeoutScale { get; set; } = 1;
+
 	private readonly Stopwatch _activeTimer = new Stopwatch();
 	private bool _timedOut;
 
@@ -13,7 +17,7 @@ public abstract class BaseGameState
 
 	public double ActiveSeconds => _activeTimer.Elapsed.TotalSeconds;
 
-	public double? RemainingSeconds => TimeoutSeconds != null ? Math.Max( TimeoutSeconds.Value - ActiveSeconds, 0 ) : null;
+	public double? RemainingSeconds => TimeoutSeconds != null ? Math.Max( TimeoutSeconds.Value * TimeoutScale - ActiveSeconds, 0 ) : null;
 
 	public virtual double? TimeoutSeconds => null;
 

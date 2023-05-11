@@ -104,6 +104,11 @@ public static class GameSession
 			return;
 		}
 
+		if ( display.Header?.RoundTime != null )
+		{
+			display.Header.RoundTime = (int)(display.Header.RoundTime * BaseGameState.TimeoutScale);
+		}
+
 		await _session.Display( display, forPlayer?.JuiceboxPlayer );
 	}
 
