@@ -15,29 +15,32 @@ public class QuestionVote : BaseGameState
 	{
 		base.OnEnter();
 
-		GameSession.Display( new JuiceboxDisplay
+		foreach ( var player in GameSession.Players )
 		{
-			Header = new JuiceboxHeader { RoundNumber = GameSession.RoundNumber, RoundTime = 60 },
-			Stage = new JuiceboxStage
+			GameSession.Display( new JuiceboxDisplay
 			{
-				Title = GameSession.Question,
-			},
-			Form = new JuiceboxForm
-			{
-				Controls = new List<JuiceboxFormControl>
+				Header = new JuiceboxHeader { RoundNumber = GameSession.RoundNumber, RoundTime = 60 },
+				Stage = new JuiceboxStage
 				{
-					new JuiceboxRadioGroup
+					Title = GameSession.Question,
+				},
+				Form = new JuiceboxForm
+				{
+					Controls = new List<JuiceboxFormControl>
 					{
-						Key = "vote",
-						Options = GameSession.Players
-							.Where( p => !string.IsNullOrEmpty( p.Answer ) )
-							.Select( p => new JuiceboxRadioOption { Label = p.Answer, Value = p.Name } )
-							.OrderBy( _ => Guid.NewGuid() )
-							.ToList(),
+						new JuiceboxRadioGroup
+						{
+							Key = "vote",
+							Options = GameSession.Players
+								.Where( p => p != player && !string.IsNullOrEmpty( p.Answer ) )
+								.Select( p => new JuiceboxRadioOption { Label = p.Answer, Value = p.Name } )
+								.OrderBy( _ => Guid.NewGuid() )
+								.ToList(),
+						},
 					},
 				},
-			},
-		} );
+			}, player );
+		}
 
 		GameSession.Players.ForEach( p =>
 		{

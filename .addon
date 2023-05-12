@@ -8,7 +8,8 @@
   "HasAssets": true,
   "AssetsPath": "",
   "ResourcePaths": [
-    "/textures/*"
+    "/textures/*",
+    "/questions/*"
   ],
   "HasCode": true,
   "CodePath": "/code/",

@@ -65,13 +65,13 @@ public class WaitingForPlayers : BaseGameState
 			{
 				if ( gamePlayer == GameSession.HostPlayer )
 				{
-					if ( GameSession.Players.Count < 2 )
+					if ( GameSession.Players.Count < 3 )
 					{
 						GameSession.Display( new JuiceboxDisplay
 						{
 							Stage = new JuiceboxStage
 							{
-								Title = "You are the host!\nRequires minimum 2 players.",
+								Title = "You are the host!\nRequires minimum 3 players.",
 							},
 						}, gamePlayer );
 					}
