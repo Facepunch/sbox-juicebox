@@ -4,7 +4,7 @@ namespace Facepunch.Juicebox;
 
 public class GameOver : BaseGameState
 {
-	public override GameScreen DisplayScreen => GameScreen.Results;
+	public override GameScreen DisplayScreen => GameScreen.GameOver;
 
 	public override void OnEnter()
 	{

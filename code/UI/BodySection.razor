@@ -30,6 +30,10 @@
             <PlayerList Header="Current Scores" ShowScore />
             <Answers ImageAnswers="@GameSession.ImageAnswers" ShowResults />
             break;
+
+        case GameScreen.GameOver:
+            <PlayerList Header="Final Scores" ShowScore />
+            break;
             
         case GameScreen.Error:
             <TextScreen Header="Something went wrong... please reload the game." />

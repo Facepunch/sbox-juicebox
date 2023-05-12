@@ -8,7 +8,7 @@ namespace Facepunch.Juicebox;
 
 public enum GameScreen
 {
-	SettingUp, WaitingForPlayers, QuestionPrompt, Voting, Results, Error,
+	SettingUp, WaitingForPlayers, QuestionPrompt, Voting, Results, GameOver, Error,
 }
 
 public static class GameSession
