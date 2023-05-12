@@ -1,4 +1,6 @@
 ﻿{
+  "title": "Default Questions",
+  "description": "The default question set for Juicebox.",
   "questions": [
     {
       "question": "If you can't afford ______ , you can't afford me.",
@@ -10,18 +12,22 @@
     },
     {
       "question": "I'm not a racist, I'm a ______.",
+      "mature": true,
       "drawn": false
     },
     {
       "question": "Sex is an integral part of ______.",
+      "mature": true,
       "drawn": false
     },
     {
       "question": "What is the best way to prevent phallic contact?",
+      "mature": true,
       "drawn": false
     },
     {
       "question": "How do you react when someone licks your hairy ass?",
+      "mature": true,
       "drawn": false
     },
     {
@@ -46,6 +52,7 @@
     },
     {
       "question": "If racism doesn't get you fired, try ______!",
+      "mature": true,
       "drawn": false
     },
     {
@@ -94,6 +101,7 @@
     },
     {
       "question": "______ is the greatest aphrodisiac?",
+      "mature": true,
       "drawn": false
     },
     {
@@ -142,6 +150,7 @@
     },
     {
       "question": "What's your favorite porno genre?",
+      "mature": true,
       "drawn": false
     },
     {
@@ -190,6 +199,7 @@
     },
     {
       "question": "The first time I had sex was during ______.",
+      "mature": true,
       "drawn": false
     },
     {
@@ -230,6 +240,7 @@
     },
     {
       "question": "What's the sexiest part of the wedding?",
+      "mature": true,
       "drawn": false
     },
     {
@@ -298,6 +309,7 @@
     },
     {
       "question": "What's the only thing sexier than a boner?",
+      "mature": true,
       "drawn": false
     },
     {
@@ -310,6 +322,7 @@
     },
     {
       "question": "What makes a man hard?",
+      "mature": true,
       "drawn": false
     },
     {

@@ -1,0 +1,33 @@
+QuestionSetUp {
+    display: flex;
+    flex-direction: column;
+    color: white;
+
+    .question-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .question-list-item {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        cursor: pointer;
+
+        &.selected {
+            background-color: #f00;
+        }
+
+        .title {
+            font-size: 40px;
+        }
+
+        .description {
+            font-size: 25px;
+        }
+    }
+
+    button {
+        font-size: 30px;
+    }
+}

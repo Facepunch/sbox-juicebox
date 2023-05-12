@@ -42,6 +42,10 @@ public static class GameSession
 
 	public static string Question { get; set; } = "The worst Halloween costume for a young child";
 
+	public static Dictionary<string, QuestionList> QuestionLists { get; private set; } = new Dictionary<string, QuestionList>();
+
+	public static HashSet<string> SelectedQuestionLists { get; private set; } = new HashSet<string>();
+
 	private static JuiceboxSession _session;
 	private static bool _sessionStarted;
 	private static Queue<QuestionEntry> _questions;
@@ -51,21 +55,79 @@ public static class GameSession
 	{
 		try
 		{
-			var questionList = FileSystem.Mounted.ReadJson<QuestionList>( "questions.json" );
-			var questions = (questionList?.Questions ?? new List<QuestionEntry>()).OrderBy( _ => Guid.NewGuid() ).Take( 20 );
-			_questions = new Queue<QuestionEntry>( questions );
+			QuestionLists = FindQuestionLists();
+			foreach ( var key in QuestionLists.Keys )
+			{
+				if ( !key.Contains( "testing" ) )
+				{
+					SelectedQuestionLists.Add( key );
+				}
+			}
 
 			await _session.Start();
 			_session.OnActionReceived += SessionActionReceived;
 			_session.OnResponseReceived += SessionResponseReceived;
 			_sessionStarted = true;
-			SwitchState( new WaitingForPlayers() );
+			SwitchState( new QuestionSetUp() );
 		}
 		catch ( Exception e )
 		{
 			SwitchState( new Error() );
 			Log.Error( e );
 		}
+	}
+
+	private static Dictionary<string, QuestionList> FindQuestionLists()
+	{
+		var results = new Dictionary<string, QuestionList>();
+
+		foreach ( var file in FileSystem.Mounted.FindFile( "", "*.jbq.json", true ) )
+		{
+			Log.Info( $"Found question list file: {file}" );
+
+			try
+			{
+				var questionList = FileSystem.Mounted.ReadJson<QuestionList>( file );
+				if ( string.IsNullOrWhiteSpace( questionList?.Title ) ||
+					 string.IsNullOrWhiteSpace( questionList?.Description ) ||
+					 questionList?.Questions == null )
+				{
+					Log.Warning( $"Question list file is missing required fields: {file}" );
+					continue;
+				}
+
+				results.Add( file, questionList );
+			}
+			catch ( Exception e )
+			{
+				Log.Error( e, $"Failed to load question list file: {file}" );
+			}
+		}
+
+		return results;
+	}
+
+	public static void ToggleQuestionList( string key )
+	{
+		if ( SelectedQuestionLists.Contains( key ) )
+		{
+			SelectedQuestionLists.Remove( key );
+		}
+		else
+		{
+			SelectedQuestionLists.Add( key );
+		}
+	}
+
+	public static void PickQuestions()
+	{
+		var questions = SelectedQuestionLists
+			.SelectMany( k => QuestionLists[k].Questions )
+			.OrderBy( _ => Random.Shared.Next() )
+			.Take( 20 );
+
+		_questions = new Queue<QuestionEntry>( questions );
+		SwitchState( new WaitingForPlayers() );
 	}
 
 	public static void Shutdown()

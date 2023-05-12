@@ -1,0 +1,19 @@
+@using Sandbox.UI
+
+@namespace Facepunch.Juicebox.UI
+@attribute [StyleSheet("/ui/styles/QuestionSetUp.scss")]
+@inherits Panel
+
+<root>
+    <div class="question-list">
+        @foreach (var (key, list) in GameSession.QuestionLists)
+        {
+            <div class="question-list-item @(GameSession.SelectedQuestionLists.Contains(key) ? "selected" : "")" @onclick=@(() => GameSession.ToggleQuestionList(key))>
+                <div class="title">@list.Title</div>
+                <div class="description">@list.Description</div>
+                <div>@list.Questions.Count questions</div>
+            </div>
+        }
+    </div>
+    <button @onclick="@GameSession.PickQuestions">Continue</button>
+</root>
