@@ -1,10 +1,24 @@
 @import "./variables/_typography.scss";
+@import "./variables/_colours.scss";
 @import "./variables/_grid.scss";
 
 Hud {
-  background-image: url("./textures/ui/background.jpg");
+  background: linear-gradient(to top, $darkestPurple, $darkPurple);
   pointer-events: all;
   flex-direction: column;
+  height: 100%;
+  transition: all 2s ease-out;
+	opacity: 1;
+
+	// When the element is created make it expand from nothing.
+	&:intro {
+		opacity: 0;
+	}
+
+	// When the element is deleted make it double in size before being deleted.
+	&:outro {
+		opacity: 0;
+	}
 
   .header {
     display: flex;
