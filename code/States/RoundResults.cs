@@ -1,4 +1,6 @@
-﻿namespace Facepunch.Juicebox;
+﻿using Juicebox;
+
+namespace Facepunch.Juicebox;
 
 public class RoundResults : BaseGameState
 {
@@ -9,6 +11,14 @@ public class RoundResults : BaseGameState
 	public override void OnExit()
 	{
 		base.OnExit();
+
+		GameSession.Display( new JuiceboxDisplay
+		{
+			Header = new JuiceboxHeader
+			{
+				RoundNumber = GameSession.RoundNumber,
+			},
+		} );
 
 		GameSession.RoundNumber++;
 	}
