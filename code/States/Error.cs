@@ -8,6 +8,6 @@ public class Error : BaseGameState
 
 	public override void OnExit()
 	{
-		throw new Exception( "Cannot leave the error state" );
+		Log.Warning( "Leaving the error state!" );
 	}
 }

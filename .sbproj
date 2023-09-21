@@ -7,10 +7,8 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "ResourcePaths": [
-    "/textures/*",
-    "/questions/*"
-  ],
+  "Resources": null,
+  "MenuResources": "/UI/*\n/textures/*\n/questions/*",
   "HasCode": true,
   "CodePath": "/code/",
   "PackageReferences": [
@@ -35,6 +33,8 @@
     ],
     "Summary": "",
     "Description": "",
-    "Public": true
+    "Public": true,
+    "TickRate": 50,
+    "LaunchConfigs": []
   }
 }

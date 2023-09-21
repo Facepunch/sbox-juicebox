@@ -1,11 +1,10 @@
-@using System;
-@using Sandbox;
-@using Sandbox.UI;
-@using Facepunch.Juicebox;
+@using Sandbox.UI
+@using Sandbox.Menu
 
 @namespace Facepunch.Juicebox.UI
 @attribute [StyleSheet( "/ui/styles/hud.scss" )]
 @inherits RootPanel
+@implements IGameMenuPanel
 
 <root>
     <div class="header">
@@ -16,3 +15,20 @@
         <BodySection></BodySection>
     </div>
 </root>
+
+@code
+{
+    public override void Tick()
+    {
+        base.Tick();
+
+        GameSession.Update();
+    }
+
+    public override void OnDeleted()
+    {
+        base.OnDeleted();
+
+        GameSession.Shutdown();
+    }
+}

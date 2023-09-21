@@ -39,7 +39,7 @@ HeaderSection {
         padding: 0px 20px;
 
         span {
-          color: linear-gradient($lightPurple, #fff);
+          color: $lightPurple; //linear-gradient($lightPurple, #fff);
           font-size: 50px;
           font-weight: 900;
           text-stroke: 6px $darkestPurple;

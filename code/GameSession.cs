@@ -133,7 +133,14 @@ public static class GameSession
 	public static void Shutdown()
 	{
 		SwitchState( new GameOver() );
-		_session?.Dispose();
+		try
+		{
+			_session?.Dispose();
+		}
+		finally
+		{
+			_session = null;
+		}
 	}
 
 	public static void Update()
@@ -171,7 +178,10 @@ public static class GameSession
 			display.Header.RoundTime = (int)(display.Header.RoundTime * BaseGameState.TimeoutScale);
 		}
 
-		await _session.Display( display, forPlayer?.JuiceboxPlayer );
+		if ( _session.IsOpen )
+		{
+			await _session.Display( display, forPlayer?.JuiceboxPlayer );
+		}
 	}
 
 	public static void SwitchState( BaseGameState newState )
