@@ -1,0 +1,28 @@
+{
+  "Title": "Juicebox API",
+  "Type": "library",
+  "Org": "facepunch",
+  "Ident": "juicebox_api",
+  "Schema": 1,
+  "IncludeSourceFiles": false,
+  "Resources": null,
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Mounts": null,
+  "IsStandaloneOnly": false,
+  "Metadata": {
+    "ProjectTemplate": null,
+    "CsProjName": "",
+    "Compiler": {
+      "RootNamespace": "Sandbox",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;",
+      "References": [],
+      "DistinctReferences": []
+    },
+    "Summary": "APIs for creating Juicebox game sessions",
+    "Description": "You can use this APIs to build your own games which connect to the Juicebox client found at juicebox.facepunch.com",
+    "Public": true,
+    "ReplaceTags": "juicebox api sdk"
+  }
+}

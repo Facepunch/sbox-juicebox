@@ -3,18 +3,15 @@
   "Type": "game",
   "Org": "facepunch",
   "Ident": "juicebox",
-  "Tags": null,
   "Schema": 1,
-  "HasAssets": true,
-  "AssetsPath": "",
-  "Resources": null,
-  "MenuResources": "/UI/*\n/textures/*\n/questions/*",
-  "HasCode": true,
-  "CodePath": "/code/",
+  "IncludeSourceFiles": false,
+  "Resources": "textures/ui/*\n*.jbq.json",
   "PackageReferences": [
     "facepunch.juicebox_api"
   ],
   "EditorReferences": null,
+  "Mounts": null,
+  "IsStandaloneOnly": false,
   "Metadata": {
     "MaxPlayers": 1,
     "MinPlayers": 1,
@@ -35,6 +32,8 @@
     "Description": "",
     "Public": true,
     "TickRate": 50,
-    "LaunchConfigs": []
+    "LaunchConfigs": [],
+    "StartupScene": "game.scene",
+    "LaunchMode": "Normal"
   }
 }

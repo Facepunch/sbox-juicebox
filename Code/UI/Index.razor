@@ -1,0 +1,32 @@
+@using Sandbox.UI
+@using Sandbox.Menu
+
+@namespace Facepunch.Juicebox.UI
+@inherits Sandbox.PanelComponent
+
+<root>
+    <div class="header">
+        <HeaderSection></HeaderSection>
+    </div>
+
+    <div class="BodyContainer">
+        <BodySection></BodySection>
+    </div>
+</root>
+
+@code
+{
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        GameSession.Update();
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        GameSession.Shutdown();
+    }
+}

@@ -1,0 +1,20 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using Facepunch.Juicebox;
+
+@namespace Facepunch.Juicebox.UI
+@inherits Panel
+
+<root>
+    <div class="question-container">
+        <span class="question-text styled">@GameSession.Question</span>
+    </div>
+</root>
+
+@code {
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( GameSession.Question );
+    }
+}

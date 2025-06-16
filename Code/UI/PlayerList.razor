@@ -1,0 +1,36 @@
+﻿@using System;
+@using System.Linq
+@using Sandbox;
+@using Sandbox.UI;
+@using Facepunch.Juicebox;
+
+@namespace Facepunch.Juicebox.UI
+@inherits Panel
+
+@code {
+    public string Header { get; set; } = null;
+    public bool ShowScore { get; set; } = false;
+}
+
+<root>
+    <h1 class="styled">@Header</h1>
+    <div class="players-container">
+        @foreach (var player in GameSession.Players)
+        {
+            <div class="styled player-row @(ShowScore ? "show-score" : "")">
+                <span class="player-name">@player.Name</span>
+                @if (ShowScore)
+                {
+                    <span class="player-score">@player.Score</span>
+                }
+            </div>
+        }
+    </div>
+</root>
+
+@code {
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(Header, ShowScore, GameSession.Players, GameSession.Players.Aggregate(0, (c, p) => c + HashCode.Combine(p, p.IsConnected)));
+    }
+}

@@ -1,0 +1,63 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using Facepunch.Juicebox;
+
+@namespace Facepunch.Juicebox.UI
+@inherits Panel
+
+@code {
+    public bool ShowResults { get; set; } = false;
+    public bool ImageAnswers { get; set; } = false;
+}
+
+<root>
+    
+    @foreach (var player in GameSession.Players)
+    {
+        if (string.IsNullOrEmpty(player.Answer))
+        {
+            continue;
+        }
+
+        <div class="answer-box green">
+            @if (ShowResults)
+            {
+                <div class="answer-header">
+                    <div class="number-container">
+                        <span class="styled">@player.VotesReceived</span>
+                    </div>
+                </div>
+            }
+            <div class="answer-body">
+                @if (ImageAnswers)
+                {
+                    <img class="answer-image" src="@player.Answer" />
+                }
+                else
+                {
+                    <h1 class="answer-text">@player.Answer</h1>
+                }
+            </div>
+            @if (ShowResults)
+            {
+                <div class="answer-footer">
+                    <div class="player-bar">
+                        <span class="styled">@player.Name</span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @* <div class="container">
+        <div class="columns">
+            <div class="column is-6">
+                <div class="answer-box">
+                    Test
+                </div>
+            </div>
+            <div class="column is-6">test</div>
+        </div>
+    </div> *@
+</root>
